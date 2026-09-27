@@ -1,0 +1,24 @@
+# NetBeans Ant build folders
+**/build/
+**/dist/
+**/nbproject/private/
+**/nbproject/build-impl.xml
+**/nbproject/profiler-build-impl.xml
+
+# IDE & OS Specific
+.DS_Store
+Thumbs.db
+*.bak
+*.log
+*.tmp
+
+# VS Code / Eclipse / IntelliJ optional settings
+.vscode/
+.idea/
+*.iml
+*.classpath
+*.project
+*.settings/
+
+# Archivos locales de apoyo
+GUION_VIDEO.md
