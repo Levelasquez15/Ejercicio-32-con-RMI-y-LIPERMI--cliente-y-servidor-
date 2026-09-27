@@ -205,17 +205,35 @@ public class VentanaPrincipal extends JFrame {
             return;
         }
 
+        final int edad;
         try {
-            int edad = Integer.parseInt(textoEdad);
-            DatosEdad datos = new DatosEdad(edad);
-            datos = calculoEdadRemoto.calcularDias(datos);
-            txtResultado.setText(datos.getResultadoDias() + " días");
-            txtMensaje.setText("<html>" + datos.getMensaje() + "</html>");
+            edad = Integer.parseInt(textoEdad);
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "La edad debe ser un número entero válido.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "ERROR con el cliente: " + ex.getMessage(), "Error Remoto", JOptionPane.ERROR_MESSAGE);
-            ex.printStackTrace();
+            return;
         }
+
+        // Ejecutar llamada remota en hilo secundario para mantener responsiva la interfaz
+        Thread hilo = new Thread(() -> {
+            try {
+                DatosEdad datos = new DatosEdad(edad);
+                System.out.println("[CLIENTE] Enviando solicitud remota con Edad: " + edad);
+
+                datos = calculoEdadRemoto.calcularDias(datos);
+
+                final DatosEdad datosRetorno = datos;
+                SwingUtilities.invokeLater(() -> {
+                    System.out.println("[CLIENTE] Respuesta recibida: " + datosRetorno.getResultadoDias() + " días | " + datosRetorno.getMensaje());
+                    txtResultado.setText(datosRetorno.getResultadoDias() + " días");
+                    txtMensaje.setText("<html>" + datosRetorno.getMensaje() + "</html>");
+                });
+            } catch (Exception ex) {
+                SwingUtilities.invokeLater(() -> {
+                    JOptionPane.showMessageDialog(VentanaPrincipal.this, "ERROR con el cliente: " + ex.getMessage(), "Error Remoto", JOptionPane.ERROR_MESSAGE);
+                });
+                ex.printStackTrace();
+            }
+        });
+        hilo.start();
     }
 }
