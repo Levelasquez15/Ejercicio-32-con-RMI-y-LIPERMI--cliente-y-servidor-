@@ -11,6 +11,8 @@ public class Principal {
         Servidor servicio = new Servidor();
         try {
             servicio.iniciar();
+            // Mantener el hilo principal activo para que el servidor permanezca a la escucha
+            Thread.currentThread().join();
         } catch (Exception ex) {
             System.err.println("Error al iniciar el servidor: " + ex.getLocalizedMessage());
         }
