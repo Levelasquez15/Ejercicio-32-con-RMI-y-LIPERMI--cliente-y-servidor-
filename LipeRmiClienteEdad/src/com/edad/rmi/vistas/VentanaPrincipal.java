@@ -170,7 +170,6 @@ public class VentanaPrincipal extends JFrame {
 
                 campoIPServidor.setEnabled(false);
                 campoPuertoServidor.setEnabled(false);
-                JOptionPane.showMessageDialog(this, "Conexión RMI establecida exitosamente con " + ipServidor + ":" + puerto, "Conectado", JOptionPane.INFORMATION_MESSAGE);
             } else if (btnIniciar.getText().equalsIgnoreCase("Desconectar")) {
                 if (cliente != null) {
                     cliente.close();
@@ -216,21 +215,24 @@ public class VentanaPrincipal extends JFrame {
         // Ejecutar llamada remota en hilo secundario para mantener responsiva la interfaz
         Thread hilo = new Thread(() -> {
             try {
-                DatosEdad datos = new DatosEdad(edad);
-                System.out.println("[CLIENTE] Enviando solicitud remota con Edad: " + edad);
+                System.out.println("Edad: " + edad);
+                DatosEdad datos = new DatosEdad();
+                datos.setEdad(edad);
+                System.out.println("Enviados los datos\nEsperando respuesta");
 
                 datos = calculoEdadRemoto.calcularDias(datos);
 
                 final DatosEdad datosRetorno = datos;
+                System.out.println("Días: " + datosRetorno.getResultadoDias() + "\nMensaje: " + datosRetorno.getMensaje());
                 SwingUtilities.invokeLater(() -> {
-                    System.out.println("[CLIENTE] Respuesta recibida: " + datosRetorno.getResultadoDias() + " días | " + datosRetorno.getMensaje());
                     txtResultado.setText(datosRetorno.getResultadoDias() + " días");
                     txtMensaje.setText("<html>" + datosRetorno.getMensaje() + "</html>");
                 });
             } catch (Exception ex) {
                 SwingUtilities.invokeLater(() -> {
-                    JOptionPane.showMessageDialog(VentanaPrincipal.this, "ERROR con el cliente: " + ex.getMessage(), "Error Remoto", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(VentanaPrincipal.this, "ERROR con el cliente " + ex.getMessage());
                 });
+                System.out.println("ERROR con el cliente " + ex.getMessage());
                 ex.printStackTrace();
             }
         });
