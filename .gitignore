@@ -19,6 +19,8 @@ Thumbs.db
 *.classpath
 *.project
 *.settings/
+bin/
+**/bin/
 
 # Archivos locales de apoyo
 GUION_VIDEO.md

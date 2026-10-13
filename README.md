@@ -110,6 +110,9 @@ Como parte de los objetivos académicos de la guía, se presenta el análisis co
 
 > 💡 **Nota sobre el Proyecto de tipo Librería (`LipeRmiLibEdad`)**:
 > El proyecto `LipeRmiLibEdad` **NO se ejecuta** (no tiene método `main`), por lo que **no debes darle a "Run"**. En este proyecto **únicamente se hace clic derecho > Clean and Build** para compilar el componente JAR en la carpeta `dist/`.
+>
+> 💡 **Nota de Compilación**:
+> Si al ejecutar en NetBeans aparece algún mensaje relativo a clases o método principal, realiza siempre **Clean and Build** (Limpiar y Construir) en los proyectos para asegurar la compilación limpia de los binarios.
 
 ---
 
